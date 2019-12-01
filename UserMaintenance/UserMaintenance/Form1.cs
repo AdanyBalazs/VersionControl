@@ -58,5 +58,19 @@ namespace UserMaintenance
                 }
             }
         }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (listUsers.SelectedItem != null)
+            {
+                dynamic asd = listUsers.SelectedItem;
+                Guid lol = asd.ID;
+
+                var u = (from x in users
+                         where x.ID == lol
+                         select x).FirstOrDefault();
+                users.Remove(u);
+            }
+        }
     }
 }
