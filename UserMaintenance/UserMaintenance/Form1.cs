@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserMaintenance.Entities;
+using System.IO;
 
 namespace UserMaintenance
 {
@@ -26,6 +27,8 @@ namespace UserMaintenance
             listUsers.DataSource = users;
             listUsers.ValueMember = "ID";
             listUsers.DisplayMember = "FullName";
+
+            btnSaveToFile.Text = Resource1.SaveToFile;
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
@@ -35,6 +38,25 @@ namespace UserMaintenance
                 FullName = txtFullName.Text,
             };
             users.Add(u);
+        }
+
+        private void BtnSaveToFile_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(sfd.FileName, false))
+                {
+                    foreach (User item in users)
+                    {
+                        sw.WriteLine(item.ID + " " + item.FullName);
+                    }
+
+                    sw.Flush();
+                    sw.Close();
+                }
+            }
         }
     }
 }
